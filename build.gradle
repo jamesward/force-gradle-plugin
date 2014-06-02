@@ -13,7 +13,7 @@ buildscript {
 }
 
 group = 'com.jamesward'
-version = '0.1-SNAPSHOT'
+version = '0.1'
 
 dependencies {
     compile gradleApi()
