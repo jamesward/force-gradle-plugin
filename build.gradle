@@ -2,6 +2,10 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
+def isSnapshot = {
+    return version.contains("SNAPSHOT")
+}
+
 group = 'com.jamesward'
 version = '1.0-SNAPSHOT'
 
@@ -18,46 +22,54 @@ repositories {
     mavenCentral()
 }
 
+def pomConfig = {
+    name 'Force Gradle Plugin'
+    description 'Salesforce.com metadata fetch and deploy'
+    url 'https://github.com/jamesward/force-gradle-plugin'
+    parent {
+        groupId 'org.sonatype.oss'
+        artifactId 'oss-parent'
+        version '7'
+    }
+    scm {
+        connection 'scm:git:https://github.com/jamesward/force-gradle-plugin.git'
+        developerConnection 'scm:git:https://github.com/jamesward/force-gradle-plugin.git'
+        url 'git@github.com:jamesward/force-gradle-plugin.git'
+    }
+    licenses {
+        license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/license/LICENSE-2.0.txt'
+            distribution 'repo'
+        }
+    }
+    developers {
+        developer {
+            id 'jamesward'
+            name 'James Ward'
+            email 'james@jamesward.com'
+        }
+    }
+}
+pomConfig.resolveStrategy = Closure.DELEGATE_ONLY
+
 publishing {
     publications {
         maven(MavenPublication) {
             from components.java
-            /*
             pom.withXml {
-                asNode().children().last() + {
-                    resolveStrategy = Closure.DELEGATE_FIRST
-                    name 'project-name'
-                    description 'description for project'
-                    url projectUrl
-                    scm {
-                        url scmUrl
-                        connection connectionUrl
-                        developerConnection developerConnectionUrl
-                    }
-                    licenses {
-                        license {
-                            name 'The Apache Software License, Version 2.0'
-                            url 'http://www.apache.org/license/LICENSE-2.0.txt'
-                            distribution 'repo'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id 'your id or nick name'
-                            name 'Your Name'
-                            email 'your@mail.address'
-                        }
-                    }
-                }
+                asNode().children().last() + pomConfig
             }
-            */
-
         }
     }
     repositories {
         maven {
-            //url " ${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases' }"
-            url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            if (isSnapshot) {
+                url 'https://oss.sonatype.org/content/repositories/snapshots'
+            }
+            else {
+                url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            }
             credentials {
                 username = sonatypeUsername
                 password = sonatypePassword
