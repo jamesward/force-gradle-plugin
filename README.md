@@ -14,4 +14,4 @@ Run the tests:
 
 Release:
 
-???
+    ./gradlew uploadArchives
