@@ -11,6 +11,7 @@ public class ForceMetadataUtil {
     public static final Double API_VERSION = 29.0;
 
     public static final String LOGIN_URL = "https://login.salesforce.com/services/Soap/u/" + API_VERSION;
+    public static final String SANDBOX_URL = "https://test.salesforce.com/services/Soap/u/" + API_VERSION;
 
 
     public static MetadataConnection createMetadataConnection(

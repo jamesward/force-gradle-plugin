@@ -25,7 +25,9 @@ class ForceMetadataFetchTask extends DefaultTask {
         String username = project.force.username
         String password = project.force.password
 
-        MetadataConnection metadataConnection = ForceMetadataUtil.createMetadataConnection(username, password, ForceMetadataUtil.LOGIN_URL)
+        String loginUrl = project.force.sandbox ? ForceMetadataUtil.SANDBOX_URL : ForceMetadataUtil.LOGIN_URL
+
+        MetadataConnection metadataConnection = ForceMetadataUtil.createMetadataConnection(username, password, loginUrl)
 
         PackageTypeMembers[] packageTypeMembersList = project.force.unpackagedComponents.collect { String k, String v ->
             def packageTypeMembers = new PackageTypeMembers()

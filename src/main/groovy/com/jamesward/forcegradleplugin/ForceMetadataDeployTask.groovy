@@ -23,8 +23,11 @@ class ForceMetadataDeployTask extends DefaultTask {
 
         String username = project.force.username
         String password = project.force.password
+        Boolean sandbox = project.force.sandbox
 
-        MetadataConnection metadataConnection = ForceMetadataUtil.createMetadataConnection(username, password, ForceMetadataUtil.LOGIN_URL)
+        String loginUrl = project.force.sandbox ? ForceMetadataUtil.SANDBOX_URL : ForceMetadataUtil.LOGIN_URL
+
+        MetadataConnection metadataConnection = ForceMetadataUtil.createMetadataConnection(username, password, loginUrl)
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
 
